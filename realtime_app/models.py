@@ -7,19 +7,17 @@ from typing import Optional, Dict, Any, Literal
 from pydantic import BaseModel
 from datetime import datetime
 
-from typing import Optional, Dict, Any, Literal
-from pydantic import BaseModel
-from datetime import datetime
-
 class RawEvent(BaseModel):
     id: str
-    source: Literal['usgs', 'nws', 'firms', 'camera']  # MUST include 'camera'
+    # add 'camera', 'eonet', 'gdacs' (and 'firms' is already there)
+    source: Literal['usgs', 'nws', 'firms', 'camera', 'eonet', 'gdacs']
     received_at: datetime
     when: Optional[datetime] = None
     lat: Optional[float] = None
     lon: Optional[float] = None
-    hazard: str  # keep as str so 'fire' is allowed
+    hazard: str
     payload: Optional[Dict[str, Any]] = None
+
 
 class ConfirmedIncident(BaseModel):
     id: str
