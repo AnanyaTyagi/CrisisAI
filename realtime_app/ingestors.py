@@ -1,6 +1,8 @@
 import os, asyncio, httpx
 from datetime import datetime, timezone
 from typing import AsyncGenerator, Dict, Any, Optional
+from zoneinfo import ZoneInfo
+
 
 def _now():
     return datetime.now(timezone.utc)
@@ -29,7 +31,7 @@ async def usgs_stream(poll_secs: int = 15) -> AsyncGenerator[Dict[str, Any], Non
                             "received_at": _now().isoformat(),
                             "lat": coords[1],
                             "lon": coords[0],
-                            "when": datetime.fromtimestamp(props.get("time", 0)/1000, tz=timezone.utc).isoformat(),
+                            "when": datetime.fromtimestamp(props.get("time", 0)/1000, tz=timezone.utc).astimezone(ZoneInfo("America/Los_Angeles")).isoformat(),
                             "hazard": "earthquake",
                             "payload": props
                         }
